@@ -246,7 +246,7 @@ public class GUI8new extends JFrame{
 		}else if(check>=2) {
 			JOptionPane.showMessageDialog(null, "하나씩 수정가능합니다.","Message",JOptionPane.ERROR_MESSAGE);
 		}else {
-			JOptionPane.showMessageDialog(null, "수정할 메뉴를 선택해주세요.","Message",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "수정할 메뉴를 선택해주세요..","Message",JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	private void delete() {
