@@ -193,7 +193,7 @@ public class GUI8new extends JFrame{
 			
 		}
 		catch(Exception e) {
-			System.out.println("오류다");
+			System.out.println("오류오류다");
 		}
 	}
 	 private String jsonReadAll(Reader reader) throws IOException{
