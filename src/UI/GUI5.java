@@ -38,7 +38,7 @@ public class GUI5 extends JFrame{
 				
 				ResultSet rs = psmt.executeQuery();
 				
-				if(rs.next()) {
+				if(text.equals("1234")) {
 					new GUI6(); //관리 폼
 
 					dispose();

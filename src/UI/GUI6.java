@@ -42,7 +42,7 @@ public class GUI6 extends JFrame{
 				@Override
 				public void mouseClicked(MouseEvent e) {
 					//메뉴관리
-					new GUI8();
+					new GUI8new();
 				}
 			});
 			btn[2].addMouseListener(new MouseAdapter() {
