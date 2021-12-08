@@ -58,6 +58,7 @@ public class GUI9new extends JFrame{
 	private Vector<String> colData;
 	private String colD[] = {"종류","메뉴명","사원명","결제수량","총결제금액","결제일"};
 	private JTable table;
+	private Vector<String> v;
 	
 	
 	public GUI9new() {
@@ -179,27 +180,29 @@ public class GUI9new extends JFrame{
 	private void Setting() {	//새로고침
 //		http://localhost:8081/order/item
 		String url="http://localhost:8081/order/item";
-		rowData.clear();
 		jf.setText("");
 		try {
+			rowData.clear();
 			 JSONObject json = readJsonFromUrl(url);
-				System.out.println(json.toString());
+				
 				JSONArray dataArray = (JSONArray)json.get("data");
 				JSONObject obj = null;
 				
-				Vector<String> v = new Vector<String>();
+				String a,b,c,d,e,date=null;
+				
 				 for(int i=0;i<dataArray.size();i++) {
 		        		obj = (JSONObject) dataArray.get(i);
 		        		
-		        		String a= Long.toString((Long)obj.get("menuNo"));
-		        		String b= Long.toString((Long)obj.get("orderCount"));
-		        		String c = (String) obj.get("memberName");
-		        		String d = (String) obj.get("mealName");
-		        		String e= Long.toString((Long)obj.get("amount"));
-		        		String date = (String) obj.get("orderDate");
+		        		a= Long.toString((Long)obj.get("menuNo"));
+		        		b= Long.toString((Long)obj.get("orderCount"));
+		        		c = (String) obj.get("memberName");
+		        		d = (String) obj.get("mealName");
+		        		e= Long.toString((Long)obj.get("amount"));
+		        		date = (String) obj.get("orderDate");
 		        		
 		        		//종류 메뉴명 사원명 결제수량 결제금액 결제일
-		        		System.out.println(a+","+b+","+c+","+d+e+","+date);
+//		        		System.out.println(a+","+b+","+c+","+d+e+","+date);
+		        		v = new Vector<String>();
 		        		switch(a) {
 						case "1" : v.add("한식");break;
 						case "2" : v.add("중식");break;
@@ -211,10 +214,13 @@ public class GUI9new extends JFrame{
 		        		v.add(b);
 		        		v.add(e);
 		        		v.add(date);
+		        		System.out.println(v);
 		        		
-		        		rowData.add(v);
 		        	}
-				
+				 
+				 for(int i=0;i<v.size();i++) {
+					 rowData.add(v);
+				 }
 			
 			table.updateUI();
 		}catch(Exception ee) {

@@ -60,11 +60,11 @@ public class GUI2 extends JFrame{
 			if(b==btn[0]) {
 				new GUI3new("1");
 			}else if(b==btn[1]){
-				new GUI3("2");
+				new GUI3new("2");
 			}else if(b==btn[2]){
-				new GUI3("3");
+				new GUI3new("3");
 			}else if(b==btn[3]){
-				new GUI3("4");
+				new GUI3new("4");
 			}
 		}
 	}

@@ -5,6 +5,14 @@ import java.awt.Container;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,6 +25,12 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import DB.Driver_connect;
 
@@ -31,7 +45,7 @@ public class GUI7 extends JFrame{
 	
 	private JComboBox<String> combo2 = new JComboBox<String>();
 	private JComboBox<String> combo3 = new JComboBox<String>();
-	
+	private int price,count,number,today = 0,cuisine=0;
 	public GUI7() {
 		setTitle("신규 메뉴 등록");
 		
@@ -95,7 +109,7 @@ public class GUI7 extends JFrame{
 			String a  = e.getActionCommand();
 			
 			String no,menuname,n,m;
-			int price,count,number,today = 0,cuisine=0;
+			
 			
 			no = combo1.getSelectedItem().toString();
 			
@@ -116,51 +130,64 @@ public class GUI7 extends JFrame{
 			
 			m = (String)combo3.getSelectedItem();
 			count = Integer.parseInt(m);
-			
+			String menuNO= Integer.toString(cuisine);
 			try {
-				Connection con = Driver_connect.makeConnection("meal");
-				PreparedStatement psmt = null;
-				String sql = "insert into meal values(?,?,?,?,?,?) ";
-				
-				String sql2 = "select max(mealNo) from meal";
-				
-				psmt = con.prepareStatement(sql);
-				
-				Statement st =con.createStatement();
-				ResultSet rs =st.executeQuery(sql2);
-				
-				while(rs.next()) {
-					number = Integer.parseInt(rs.getString(1))+1;
-					System.out.println(number);
-				
+				String url="http://localhost:8081/meal/updateMenu?menuNo="+URLEncoder.encode((String)menuNO)+
+						"&mealName="+menuname+"&price="+price+"&maxCount="+count+"&todayMeal="+today;
+				System.out.println(url);
+				//이름 가격 맥스카운트 조리가능수량
 					if(a.equals("등록")) {
-						if(jt.equals(" ")) {
-							JOptionPane.showConfirmDialog(null, "메뉴명을 입력해주세요.","Message",JOptionPane.ERROR_MESSAGE);
-						}else {
+//						if(jt.equals(" ")) {
+//							JOptionPane.showConfirmDialog(null, "메뉴명을 입력해주세요.","Message",JOptionPane.ERROR_MESSAGE);
+//						}else {
+//							
+							JSONObject json = readJsonFromUrl(url);
+							JSONArray dataArray = (JSONArray)json.get("data");
+							JSONObject obj = null;
 							
-							psmt.setInt(1, number);psmt.setInt(2, cuisine);psmt.setString(3, menuname);
-							psmt.setInt(4, price);psmt.setInt(5, count);psmt.setInt(6, today);
-							
-							int re = psmt.executeUpdate();
-							if(re>0) {
-								JOptionPane.showConfirmDialog(null, "메뉴가 정상적으로 등록되었습니다.","Message",JOptionPane.INFORMATION_MESSAGE);
-								dispose();
-							}
+							JOptionPane.showMessageDialog(null, "메뉴가 정상적으로 등록되었습니다.","Message",JOptionPane.INFORMATION_MESSAGE);
+								
 						}
-					}else {
-						dispose();
-					}
-				}
-				psmt.close();
-				con.close();
-				rs.close();
+//					}
 			}catch(Exception e2) {
-				
+				e2.printStackTrace();
 			}
+			
 			
 			
 		}
 	}
+	private String jsonReadAll(Reader reader) throws IOException{
+        StringBuilder sb = new StringBuilder();
+
+        int cp;
+        while((cp = reader.read()) != -1){
+            sb.append((char) cp);
+        }
+
+        return sb.toString();
+    }
+
+    private JSONObject readJsonFromUrl(String url) throws IOException,JSONException{
+        InputStream is = new URL(url).openStream();
+
+        try{
+            BufferedReader br = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+            String jsonText = jsonReadAll(br);
+//            System.out.println(jsonText);
+            JSONObject json = new JSONObject();
+            JSONParser parser = new JSONParser();
+            try {
+            	Object obj = parser.parse(jsonText);
+            	json = (JSONObject)obj;
+            }catch(ParseException e) {
+            	e.printStackTrace();
+            }
+            return json;
+        } finally {
+            is.close();
+        }
+    }
 //	public static void main(String args[]) {
 //		new GUI7();
 //	}

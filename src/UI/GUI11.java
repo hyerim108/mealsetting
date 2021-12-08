@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -45,7 +46,7 @@ public class GUI11 extends JFrame{
 	private String sanumber;
 	
 	private JLabel hide = new JLabel("");
-	private String pw;
+	private String pw=null;
 	private String pw2;
 	
 	private JButton btn[] = new JButton[2];
@@ -88,7 +89,6 @@ public class GUI11 extends JFrame{
 				jpass[1].addKeyListener(new KeyOver());
 
 			try {
-				String sawonnum = "select max(memberNo) from member";
 				
 				String url="http://localhost:8081/member/count";
 				
@@ -171,26 +171,31 @@ public class GUI11 extends JFrame{
 		}
 	}
 	private void isSet() {
-		
-		if(jf[1].getText().equals("") || pw.equals("") || pw2.equals("")) {
-			JOptionPane.showMessageDialog(null, "필수 항목(*) 누락","Message",JOptionPane.ERROR_MESSAGE);
-		}else if(!pw.equals(pw2)) {
-			JOptionPane.showMessageDialog(null, "패스워드 확인 요망","Message",JOptionPane.ERROR_MESSAGE);
-		}else {
+		pw = new String(jpass[0].getPassword());
+//		
+//		if(jf[1].getText().equals("") || pw.equals("") || pw2.equals("")) {
+//			JOptionPane.showMessageDialog(null, "필수 항목(*) 누락","Message",JOptionPane.ERROR_MESSAGE);
+//		}else if(!pw.equals(pw2)) {
+//			JOptionPane.showMessageDialog(null, "패스워드 확인 요망","Message",JOptionPane.ERROR_MESSAGE);
+//		}else {
 			try {
-				Connection con = Driver_connect.makeConnection("meal");
-				String sql = "insert into member value('"+ jf[0].getText() +"','"+jf[1].getText()+"'," + pw + ")";
-				
-				Statement st = con.createStatement();
-				st.executeUpdate(sql);
-				
+				System.out.println(jf[1].getText());
+				String url="http://localhost:8081/member/insert"+"?memberName="+URLEncoder.encode((String)jf[1].getText())+"&passwd="+URLEncoder.encode((String)pw);
+//				String url="http://localhost:8081/member/insert/"+URLEncoder.encode((String)jf[1].getText())+"/"+URLEncoder.encode((String)pw);
+				JSONObject json = readJsonFromUrl(url);
+				JSONArray dataArray = (JSONArray)json.get("data");
+				JSONObject obj = null;
 				JOptionPane.showMessageDialog(null, "사원이 등록되었습니다.","Message",JOptionPane.INFORMATION_MESSAGE);;
 			
-			}catch(SQLException e2) {
-				System.out.println("isset 오류");
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
-	}
+//	}
 	 private String jsonReadAll(Reader reader) throws IOException{
 	        StringBuilder sb = new StringBuilder();
 

@@ -125,10 +125,13 @@ public class GUI8f extends JFrame{
 		}
 	}
 	private void reset() {
-		String sql = "update meal set price="+com2.getSelectedItem()+",maxCount="+com3.getSelectedItem()+" where mealName='"+jf.getText()+"'";
-		String url="http://localhost:8081/meal/updateMenu/"+
-				URLEncoder.encode((String) com2.getSelectedItem())+"/"+
-				URLEncoder.encode((String) com3.getSelectedItem())+"/"+URLEncoder.encode((String) jf.getText());
+//		String sql = "update meal set price="+com2.getSelectedItem()+",maxCount="+com3.getSelectedItem()+" where mealName='"+jf.getText()+"'";
+//		String url="http://localhost:8081/meal/updateMenu/"+
+//				URLEncoder.encode((String) com2.getSelectedItem())+"/"+
+//				URLEncoder.encode((String) com3.getSelectedItem())+"/"+URLEncoder.encode((String) jf.getText());
+		String url="http://localhost:8081/meal/updateMenu?price="+
+				URLEncoder.encode((String) com2.getSelectedItem())+"&maxCount="+
+				URLEncoder.encode((String) com3.getSelectedItem())+"&mealName="+URLEncoder.encode((String) jf.getText());
 		try {
 				JSONObject json = readJsonFromUrl(url);
 			JOptionPane.showMessageDialog(null, "메뉴가 정상적으로 수정되었습니다.","Message",JOptionPane.QUESTION_MESSAGE);
