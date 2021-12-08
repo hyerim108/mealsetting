@@ -144,7 +144,7 @@ public class GUI7 extends JFrame{
 							JSONObject json = readJsonFromUrl(url);
 							JSONArray dataArray = (JSONArray)json.get("data");
 							JSONObject obj = null;
-							
+							System.out.println("하하");
 							JOptionPane.showMessageDialog(null, "메뉴가 정상적으로 등록되었습니다.","Message",JOptionPane.INFORMATION_MESSAGE);
 								
 						}
