@@ -97,6 +97,7 @@ public class GUI9new extends JFrame{
 	}
 	
 	private void search() {	//조회를 클릭시
+		rowData.clear();
 		String url="http://localhost:8081/order/item/"+jf.getText();
 //		String sql = "select meal.cuisineNo,meal.mealName,member.memberName,"
 //				+ "orderCount,amount,orderDate from orderlist "
@@ -105,7 +106,7 @@ public class GUI9new extends JFrame{
 //				"JOIN meal on "
 //				+"orderlist.mealNo = meal.mealNo "
 //				+"where meal.mealName like '%"+ jf.getText() +"%'";
-		rowData.clear();
+		
 		try {
 			 JSONObject json = readJsonFromUrl(url);
 //				System.out.println(json.toString());
@@ -186,18 +187,14 @@ public class GUI9new extends JFrame{
 		try {
 			rowData.clear();
 			 JSONObject json = readJsonFromUrl(url);
-<<<<<<< HEAD
+
 				
 				JSONArray dataArray = (JSONArray)json.get("data");
 				JSONObject obj = null;
 				
 				String a,b,c,d,e,date=null;
-=======
-//				System.out.println(json.toString());
-				JSONArray dataArray = (JSONArray)json.get("data");
-				JSONObject obj = null;
+
 				
->>>>>>> e9bcfd4b6b197c41d44526f3ef3dd89dec3145b0
 				
 				 for(int i=0;i<dataArray.size();i++) {
 					 Vector<String> v = new Vector<String>();
@@ -224,13 +221,11 @@ public class GUI9new extends JFrame{
 		        		v.add(b);
 		        		v.add(e);
 		        		v.add(date);
-		        		System.out.println(v);
+		        		
+		        		rowData.add(v);
 		        		
 		        	}
 				 
-				 for(int i=0;i<v.size();i++) {
-					 rowData.add(v);
-				 }
 			
 			table.updateUI();
 		}catch(Exception ee) {
