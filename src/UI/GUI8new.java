@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -148,14 +149,9 @@ public class GUI8new extends JFrame{
 			i=4;
 		}
 		String name ;
-		String sql = "select mealName, price, maxCount, todayMeal from meal where cuisineNo = " + i;
 		String url="http://localhost:8081/meal/item/"+i;
 		try {
 			rowData.clear();
-//			Connection con = Driver_connect.makeConnection("meal");
-//			
-//			Statement stmt = con.createStatement();
-//			ResultSet rs = stmt.executeQuery(sql);
 //			
 			 JSONObject json = readJsonFromUrl(url);
 //			System.out.println(json.toString());
@@ -164,10 +160,7 @@ public class GUI8new extends JFrame{
 			JSONObject obj = null;
 			for(int i=0;i<dataArray.size();i++) {
         		obj = (JSONObject) dataArray.get(i);
-        		 System.out.println(obj.get("mealName"));
-	        	 System.out.println(obj.get("price"));
-	        	 System.out.println(obj.get("maxCount"));
-	        	 System.out.println(obj.get("todayMeal"));
+        		
 	        	 
 	        	 String a =(String) obj.get("mealName");
 					String aa =Long.toString((Long)obj.get("price"));
@@ -195,6 +188,89 @@ public class GUI8new extends JFrame{
 		catch(Exception e) {
 			System.out.println("오류오류다");
 		}
+	}
+	
+	private void fresh() {
+		int check =0;
+		int u=0;
+		for(int i =0;i<model.getRowCount();i++) {
+			if((boolean)model.getValueAt(i, 0)) {
+				u=i;
+				check++;
+			};
+		}
+		String b[] = new String[4];
+		if(check == 1){
+			b[0] = com.getSelectedItem().toString();
+			b[1] = table.getValueAt(u, 1).toString();
+			b[2] = table.getValueAt(u, 2).toString();
+			b[3] = table.getValueAt(u, 3).toString();
+			new GUI8f(b);
+		}else if(check>=2) {
+			JOptionPane.showMessageDialog(null, "하나씩 수정가능합니다.","Message",JOptionPane.ERROR_MESSAGE);
+		}else {
+			JOptionPane.showMessageDialog(null, "수정할 메뉴를 선택해주세요..","Message",JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	private void delete() {
+//		String sql = "delete from meal where mealName='";
+		String url="http://localhost:8081/meal/delete/";
+		
+		try {
+			
+//			
+			for(int i =0;i<model.getRowCount();i++) {
+				if((boolean)model.getValueAt(i, 0)) {
+					String g = url +URLEncoder.encode((String) model.getValueAt(i, 1));
+//					
+					JSONObject json = readJsonFromUrl(g);
+//					JSONArray dataArray = (JSONArray)json.get("data");
+
+				};
+			}
+			
+		}catch(IOException e2) {
+			e2.printStackTrace();
+		}catch(JSONException e3) {
+			e3.printStackTrace();
+		}
+		search();
+	}
+	public void isToday() {
+		
+		int cnt = 0;
+		Vector<String> v = new Vector<String>();
+		for(int i=0;i<model.getRowCount();i++) {
+			if((boolean)model.getValueAt(i, 0)) {
+				v.add((String)model.getValueAt(i, 1));
+				cnt++;
+			}
+		}
+		if(cnt>25) {
+			JOptionPane.showMessageDialog(null, "25개를 초과할 수 업습니다..","Message",JOptionPane.ERROR_MESSAGE);
+		}else {
+			
+//			String sql2 = "update meal set todayMeal=1 where mealName='";
+			String url="http://localhost:8081/meal/update/";
+			String sql = "http://localhost:8081/meal/updatezero/"+i;
+			try {
+//				JSONObject json3 = readJsonFromUrl(url);
+				
+
+				
+				for(int i=0;i<v.size();i++) {
+					String g = url + URLEncoder.encode(v.get(i));
+//					st.executeUpdate(g);
+					JSONObject json = readJsonFromUrl(g);
+					JSONObject json2 = readJsonFromUrl(sql);
+				}
+			}catch(IOException e2) {
+				e2.printStackTrace();
+			}catch(JSONException e3) {
+				e3.printStackTrace();
+			}
+		}
+		search();
 	}
 	 private String jsonReadAll(Reader reader) throws IOException{
 	        StringBuilder sb = new StringBuilder();
@@ -227,76 +303,6 @@ public class GUI8new extends JFrame{
 	            is.close();
 	        }
 	    }
-	private void fresh() {
-		int check =0;
-		int u=0;
-		for(int i =0;i<model.getRowCount();i++) {
-			if((boolean)model.getValueAt(i, 0)) {
-				u=i;
-				check++;
-			};
-		}
-		String b[] = new String[4];
-		if(check == 1){
-			b[0] = com.getSelectedItem().toString();
-			b[1] = table.getValueAt(u, 1).toString();
-			b[2] = table.getValueAt(u, 2).toString();
-			b[3] = table.getValueAt(u, 3).toString();
-			new GUI8f(b);
-		}else if(check>=2) {
-			JOptionPane.showMessageDialog(null, "하나씩 수정가능합니다.","Message",JOptionPane.ERROR_MESSAGE);
-		}else {
-			JOptionPane.showMessageDialog(null, "수정할 메뉴를 선택해주세요..","Message",JOptionPane.ERROR_MESSAGE);
-		}
-	}
-	private void delete() {
-		String sql = "delete from meal where mealName='";
-		try {
-			Connection con = Driver_connect.makeConnection("meal");
-			Statement st = con.createStatement();
-			for(int i =0;i<model.getRowCount();i++) {
-				if((boolean)model.getValueAt(i, 0)) {
-					String g = sql + model.getValueAt(i, 1) +"'";
-					st.executeUpdate(g);
-				};
-			}
-			
-		}catch(SQLException e2) {
-			System.out.println("del sql 오류");
-		}
-		search();
-	}
-	public void isToday() {
-		
-		int cnt = 0;
-		Vector<String> v = new Vector<String>();
-		for(int i=0;i<model.getRowCount();i++) {
-			if((boolean)model.getValueAt(i, 0)) {
-				v.add((String)model.getValueAt(i, 1));
-				cnt++;
-			}
-		}
-		if(cnt>25) {
-			JOptionPane.showMessageDialog(null, "25개를 초과할 수 업습니다..","Message",JOptionPane.ERROR_MESSAGE);
-		}else {
-			
-			String sql2 = "update meal set todayMeal=1 where mealName='";
-			String sql = "update meal set todayMeal=0 where mealNo="+i;
-			try {
-				Connection con = Driver_connect.makeConnection("meal");
-				Statement st = con.createStatement();
-				st.executeUpdate(sql);
-				
-				for(int i=0;i<v.size();i++) {
-					String g = sql2 + v.get(i)+"'";
-					st.executeUpdate(g);
-				}
-			}catch(SQLException e) {
-				System.out.println("isToday 오류");
-			}
-		}
-		search();
-	}
 //	public static void main(String args[]) {
 //		new GUI8();
 //	}

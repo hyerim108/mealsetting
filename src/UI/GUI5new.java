@@ -19,22 +19,35 @@ import javax.swing.JTextField;
 import DB.Driver_connect;
 
 
-public class GUI5 extends JFrame{
+public class GUI5new extends JFrame{
 	private JButton zero = new JButton("0");
 	private JPasswordField jt = new JPasswordField(21);
 	
-	public GUI5() {
+	public GUI5new() {
 		int click = JOptionPane.showConfirmDialog(this, new manager(),"관리자 패스워드 입력",JOptionPane.OK_CANCEL_OPTION);
 		
 		if(click == JOptionPane.OK_OPTION) {
+			try {
+				Connection con = Driver_connect.makeConnection("meal");
+				String sql ="select * from member where passwd = ?";
+				PreparedStatement psmt = con.prepareStatement(sql);
 				
 				String text = new String(jt.getPassword());
+				
+				psmt.setString(1, text);
+				
+				ResultSet rs = psmt.executeQuery();
+				
 				if(text.equals("1234")) {
 					new GUI6(); //관리 폼
 				}else {
 					JOptionPane.showConfirmDialog(this, "관리자 패스워드를 확인하십시오.","Message",JOptionPane.ERROR_MESSAGE,JOptionPane.YES_OPTION);
 				
 				}
+				
+			}catch(SQLException e) {
+				System.out.println("sql오류");
+			}
 		}
 		
 		setSize(300,300);

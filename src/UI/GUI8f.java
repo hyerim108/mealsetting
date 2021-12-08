@@ -5,6 +5,14 @@ import java.awt.Container;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -16,6 +24,11 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import org.json.JSONException;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import DB.Driver_connect;
 
@@ -113,18 +126,49 @@ public class GUI8f extends JFrame{
 	}
 	private void reset() {
 		String sql = "update meal set price="+com2.getSelectedItem()+",maxCount="+com3.getSelectedItem()+" where mealName='"+jf.getText()+"'";
-		
+		String url="http://localhost:8081/meal/updateMenu/"+
+				URLEncoder.encode((String) com2.getSelectedItem())+"/"+
+				URLEncoder.encode((String) com3.getSelectedItem())+"/"+URLEncoder.encode((String) jf.getText());
 		try {
-			Connection con = Driver_connect.makeConnection("meal");
-			Statement st = con.createStatement();
-			st.executeUpdate(sql);
-			
+				JSONObject json = readJsonFromUrl(url);
 			JOptionPane.showMessageDialog(null, "메뉴가 정상적으로 수정되었습니다.","Message",JOptionPane.QUESTION_MESSAGE);
 			dispose();
-		}catch(SQLException e1) {
+		}catch(Exception e1) {
+			e1.printStackTrace();
 			System.out.println("업테이트 sql 오류");
 		}
 		
 		
 	}
+	private String jsonReadAll(Reader reader) throws IOException{
+        StringBuilder sb = new StringBuilder();
+
+        int cp;
+        while((cp = reader.read()) != -1){
+            sb.append((char) cp);
+        }
+
+        return sb.toString();
+    }
+
+    private JSONObject readJsonFromUrl(String url) throws IOException,JSONException{
+        InputStream is = new URL(url).openStream();
+
+        try{
+            BufferedReader br = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+            String jsonText = jsonReadAll(br);
+//            System.out.println(jsonText);
+            JSONObject json = new JSONObject();
+            JSONParser parser = new JSONParser();
+            try {
+            	Object obj = parser.parse(jsonText);
+            	json = (JSONObject)obj;
+            }catch(ParseException e) {
+            	e.printStackTrace();
+            }
+            return json;
+        } finally {
+            is.close();
+        }
+    }
 }

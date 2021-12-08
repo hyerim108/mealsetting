@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.sql.Connection;
 
@@ -140,27 +141,14 @@ public class GUI3new extends JFrame{
 		
 		public centerPaner(String b) {	//5*6버튼 넣기 내일 꺼 복붙하기
 
-//			String url = "http://localhost:8081/menu/list";
-//	    	
-//	        JSONObject json = readJsonFromUrl(url);
-//
-//	        System.out.println(json.toString());
-//	        JSONArray dataArray = (JSONArray)json.get("data");
-//	        
-//	        for(int i=0;i<dataArray.size();i++) {
-//	        	JSONObject obj = (JSONObject) dataArray.get(i);
-//	        	 System.out.println(obj.get("menuNO"));
-//	        }
 			String url="http://localhost:8081/meal/count/"+b;
-//			String mealname = "select mealName,price from meal where cuisineNo = "+b;
-				con = Driver_connect.makeConnection("meal");
 				try {
 
 					 JSONObject json = readJsonFromUrl(url);
 					 JSONArray dataArray = (JSONArray)json.get("data");
 					
 						int a = Integer.parseInt((String) json.get("item"));
-						System.out.println(a);
+
 						if(a%5==0) {
 							setLayout(new GridLayout(a/5,5));
 						}else {
@@ -186,68 +174,18 @@ public class GUI3new extends JFrame{
 		}
 		
 
-	    private String jsonReadAll(Reader reader) throws IOException{
-	        StringBuilder sb = new StringBuilder();
-
-	        int cp;
-	        while((cp = reader.read()) != -1){
-	            sb.append((char) cp);
-	        }
-
-	        return sb.toString();
-	    }
-
-	    private JSONObject readJsonFromUrl(String url) throws IOException,JSONException{
-	        InputStream is = new URL(url).openStream();
-
-	        try{
-	            BufferedReader br = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
-	            String jsonText = jsonReadAll(br);
-//	            System.out.println(jsonText);
-	            JSONObject json = new JSONObject();
-	            JSONParser parser = new JSONParser();
-	            try {
-	            	Object obj = parser.parse(jsonText);
-	            	json = (JSONObject)obj;
-	            }catch(ParseException e) {
-	            	e.printStackTrace();
-	            }
-	            return json;
-	        } finally {
-	            is.close();
-	        }
-	    }
+	  
 		public void makebutton(String b) {
-//			String url = "http://localhost:8081/menu/list";
-//	    	http://localhost:8081/meal/item/
-//	        JSONObject json = readJsonFromUrl(url);
-//
-//	        System.out.println(json.toString());
-//	        JSONArray dataArray = (JSONArray)json.get("data");
-//	        
-//	        for(int i=0;i<dataArray.size();i++) {
-//	        	JSONObject obj = (JSONObject) dataArray.get(i);
-//	        	 System.out.println(obj.get("menuNO"));
-//	        }
 			String url="http://localhost:8081/meal/item/"+b;
-//			String mealname = "select mealName,price,maxCount,todayMeal from meal where cuisineNo = "+b;
-//			con = Driver_connect.makeConnection("meal");
-//			
 			
 			try {
 				
 				 JSONObject json = readJsonFromUrl(url);
-//				System.out.println(json.toString());
 				JSONArray dataArray = (JSONArray)json.get("data");
-//				 System.out.println(json.get("mealName"));
 				JSONObject obj = null;
 	
 				 for(int i=0;i<dataArray.size();i++) {
 			        		obj = (JSONObject) dataArray.get(i);
-//			        	 System.out.println(obj.get("mealName"));
-//			        	 System.out.println(obj.get("price"));
-//			        	 System.out.println(obj.get("maxCount"));
-//			        	 System.out.println(obj.get("todayMeal"));
 			        	 
 			        	 String a =(String) obj.get("mealName");
 							String aa =Long.toString((Long)obj.get("price"));
@@ -282,7 +220,6 @@ public class GUI3new extends JFrame{
 					
 					stext[0].setText(name);
 					falsebtn.setEnabled(false);
-					//new detail();//버튼 클릭하면 상세보기
 				}
 			});
 		}
@@ -494,34 +431,23 @@ public class GUI3new extends JFrame{
 					JOptionPane.showMessageDialog(null, "품명을 선택해주세요","message",JOptionPane.ERROR_MESSAGE);
 				}
 				 //입력하면 테이블
-				String url = "http://localhost:8081/meal/search/"+stext[0].getText();
+				String url = "http://localhost:8081/meal/search/"+URLEncoder.encode(stext[0].getText());
 					try {
 					int maxcount = 0;
 					
 					Vector<String> vt = new Vector<String>(); //table 벡터
 //				
-						
-//					String sql = "select mealNo,price from meal where mealName='"++"'";
 						JSONObject json = readJsonFromUrl(url);
 						
 						JSONArray dataArray = (JSONArray)json.get("data");
-						System.out.println(json.get("mealNo"));
 						String num =null;String price = null;
 					JSONObject obj = null;
 					 for(int i=0;i<dataArray.size();i++) {
 			        		obj = (JSONObject) dataArray.get(i);
-			        	 System.out.println(obj.get("mealNo"));
-			        	 System.out.println(obj.get("price"));
 					
-			        	num =(String) obj.get("mealNo");
+			        	num =Long.toString((Long)obj.get("mealNo"));
 						price =Long.toString((Long)obj.get("price"));
-						
-			        	
-//						totalsum += sum;
-//						String newsum = NumberFormat.getInstance().format(totalsum);
-//						won.setText(newsum+"원");
 					 }
-					 System.out.println(num+price);
 				        
 						
 						int sum = Integer.parseInt(stext[1].getText())*Integer.parseInt(price);
@@ -538,39 +464,8 @@ public class GUI3new extends JFrame{
 					}catch(Exception e1) {
 						e1.printStackTrace();
 					}
-					
-					}//else
-				}
-		private JSONObject readJsonFromUrl(String url) throws IOException,JSONException{
-	        InputStream is = new URL(url).openStream();
-
-	        try{
-	            BufferedReader br = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
-	            String jsonText = jsonReadAll(br);
-//	            System.out.println(jsonText);
-	            JSONObject json = new JSONObject();
-	            JSONParser parser = new JSONParser();
-	            try {
-	            	Object obj = parser.parse(jsonText);
-	            	json = (JSONObject)obj;
-	            }catch(ParseException e) {
-	            	e.printStackTrace();
-	            }
-	            return json;
-	        } finally {
-	            is.close();
-	        }
-	    }
-		  private String jsonReadAll(Reader reader) throws IOException{
-		        StringBuilder sb = new StringBuilder();
-
-		        int cp;
-		        while((cp = reader.read()) != -1){
-		            sb.append((char) cp);
-		        }
-
-		        return sb.toString();
-		    }
+				}//else
+			}
 	}
 	class rsSouth extends JPanel{	//결제 취소
 		private JLabel sawonnum = new JLabel("사원번호");
@@ -592,24 +487,31 @@ public class GUI3new extends JFrame{
 					if(click == JOptionPane.OK_OPTION) {
 						try {
 						Connection con = Driver_connect.makeConnection("meal");
-						String sql = "select * from member where memberNo=? and passwd=?";
-						PreparedStatement psmt = con.prepareStatement(sql);
 						String id = combo.getSelectedItem().toString();
 						String pass = new String(jtxt.getPassword());
 						
-						psmt.setString(1, id);
-						psmt.setString(2, pass);
+						String url="http://localhost:8081/member/find/"+id;
+//						String sql = "select * from member where memberNo='"+id+"' and passwd='"+pass+"'";
+//						PreparedStatement psmt = con.prepareStatement(sql);
+						 JSONObject json = readJsonFromUrl(url);
+							JSONArray dataArray = (JSONArray)json.get("data");
+							JSONObject obj = null;String aa = null;
+							for(int i=0;i<dataArray.size();i++) {
+								obj = (JSONObject) dataArray.get(i);
+							
+								aa=(String) obj.get("passwd");
+
+							}
+							 
 						
-						ResultSet rs = psmt.executeQuery();
-						
-						if(rs.next()) {
+						if(aa.equals(pass)) {
 							JOptionPane.showMessageDialog(null,"결제가 완료되었습니다.\n식권을 출력합니다.","Message",JOptionPane.INFORMATION_MESSAGE);
 							new GUI4(model,id,a);
 						}else {
 							JOptionPane.showMessageDialog(null,"패스워드가 일치하지 않습니다.","Message",JOptionPane.OK_OPTION);
 						}
-						}catch(SQLException eee) {
-							System.out.println("결제자 인증 sql");
+						}catch(Exception eee) {
+							eee.printStackTrace();
 						}
 
 						
@@ -625,14 +527,17 @@ public class GUI3new extends JFrame{
 			setLayout(new GridLayout(2,2));
 			
 			try {
-				Connection con = Driver_connect.makeConnection("meal");
-				Statement st = con.createStatement();
 				
-				String sql = "select memberNo from member";
-				ResultSet rs = st.executeQuery(sql);
+				String url="http://localhost:8081/member/list";
 				
-				while(rs.next()) {
-					vv.add(rs.getString("memberNo"));
+				JSONObject json = readJsonFromUrl(url);
+				JSONArray dataArray = (JSONArray)json.get("data");
+				JSONObject obj = null;
+				for(int i=0;i<dataArray.size();i++) {
+					obj = (JSONObject) dataArray.get(i);
+//					System.out.println(obj.get("memberNO"));
+					String aa =Long.toString((Long)obj.get("memberNO"));
+					vv.add(aa);
 				}
 				for(int i=0;i<vv.size();i++) {
 					combo = new JComboBox(vv);
@@ -642,14 +547,45 @@ public class GUI3new extends JFrame{
 				add(password);
 				add(jtxt);
 				
-			}catch(SQLException es) {
-				System.out.println("결제 sql오류");
+			}catch(Exception es) {
+				es.printStackTrace();
 			}
 			setSize(100,100);
 			setVisible(true);
 		}
 	}
 	}
+	  private String jsonReadAll(Reader reader) throws IOException{
+	        StringBuilder sb = new StringBuilder();
+
+	        int cp;
+	        while((cp = reader.read()) != -1){
+	            sb.append((char) cp);
+	        }
+
+	        return sb.toString();
+	    }
+
+	    private JSONObject readJsonFromUrl(String url) throws IOException,JSONException{
+	        InputStream is = new URL(url).openStream();
+
+	        try{
+	            BufferedReader br = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+	            String jsonText = jsonReadAll(br);
+//	            System.out.println(jsonText);
+	            JSONObject json = new JSONObject();
+	            JSONParser parser = new JSONParser();
+	            try {
+	            	Object obj = parser.parse(jsonText);
+	            	json = (JSONObject)obj;
+	            }catch(ParseException e) {
+	            	e.printStackTrace();
+	            }
+	            return json;
+	        } finally {
+	            is.close();
+	        }
+	    }
 //	public static void main(String[] args) {
 //		new GUI3new();
 //

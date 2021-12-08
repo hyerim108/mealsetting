@@ -8,6 +8,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.URL;
+import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,6 +28,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+
+import org.json.JSONException;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import DB.Driver_connect;
 
@@ -75,17 +88,18 @@ public class GUI11 extends JFrame{
 				jpass[1].addKeyListener(new KeyOver());
 
 			try {
-				con = Driver_connect.makeConnection("meal");
 				String sawonnum = "select max(memberNo) from member";
 				
-				st= con.createStatement();
-				rs = st.executeQuery(sawonnum); //가져오기 
-	
-				while(rs.next()) {
-					sanumber = Integer.toString(rs.getInt(1)+1);
-				}
-			}catch(SQLException e) {
+				String url="http://localhost:8081/member/count";
 				
+				 JSONObject json = readJsonFromUrl(url);
+//					System.out.println(json.toString());
+					JSONArray dataArray = (JSONArray)json.get("data");
+					int a = Integer.parseInt((String) json.get("item"));
+	
+					sanumber = Integer.toString(a+1);
+			}catch(Exception e) {
+				e.printStackTrace();
 			}
 			jf[0].setText(sanumber);
 			jf[0].setEnabled(false);
@@ -177,6 +191,37 @@ public class GUI11 extends JFrame{
 			}
 		}
 	}
+	 private String jsonReadAll(Reader reader) throws IOException{
+	        StringBuilder sb = new StringBuilder();
+
+	        int cp;
+	        while((cp = reader.read()) != -1){
+	            sb.append((char) cp);
+	        }
+
+	        return sb.toString();
+	    }
+
+	    private JSONObject readJsonFromUrl(String url) throws IOException,JSONException{
+	        InputStream is = new URL(url).openStream();
+
+	        try{
+	            BufferedReader br = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+	            String jsonText = jsonReadAll(br);
+//	            System.out.println(jsonText);
+	            JSONObject json = new JSONObject();
+	            JSONParser parser = new JSONParser();
+	            try {
+	            	Object obj = parser.parse(jsonText);
+	            	json = (JSONObject)obj;
+	            }catch(ParseException e) {
+	            	e.printStackTrace();
+	            }
+	            return json;
+	        } finally {
+	            is.close();
+	        }
+	    }
 //	public static void main(String args[]) {
 //		new GUI11();
 //	}
