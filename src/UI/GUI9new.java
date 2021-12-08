@@ -14,6 +14,7 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.sql.Date;
@@ -98,7 +99,7 @@ public class GUI9new extends JFrame{
 	
 	private void search() {	//조회를 클릭시
 		rowData.clear();
-		String url="http://localhost:8081/order/item/"+jf.getText();
+		String url="http://localhost:8081/order/item/"+URLEncoder.encode((String)jf.getText());
 //		String sql = "select meal.cuisineNo,meal.mealName,member.memberName,"
 //				+ "orderCount,amount,orderDate from orderlist "
 //				+"INNER JOIN member on "
