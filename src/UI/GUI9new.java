@@ -1,4 +1,4 @@
-package UI;
+	package UI;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -107,12 +107,12 @@ public class GUI9new extends JFrame{
 		rowData.clear();
 		try {
 			 JSONObject json = readJsonFromUrl(url);
-				System.out.println(json.toString());
+//				System.out.println(json.toString());
 				JSONArray dataArray = (JSONArray)json.get("data");
-				JSONObject obj = null;
+				JSONObject obj = null;				
 				
-				Vector<String> v = new Vector<String>();
 				 for(int i=0;i<dataArray.size();i++) {
+					 Vector<String> v = new Vector<String>();
 		        		obj = (JSONObject) dataArray.get(i);
 		        		
 		        		String a= Long.toString((Long)obj.get("menuNo"));
@@ -121,9 +121,10 @@ public class GUI9new extends JFrame{
 		        		String d = (String) obj.get("mealName");
 		        		String e= Long.toString((Long)obj.get("amount"));
 		        		String date = (String) obj.get("orderDate");
-		        		
+		        		        		
 		        		//종류 메뉴명 사원명 결제수량 결제금액 결제일
-		        		System.out.println(a+","+b+","+c+","+d+e+","+date);
+	        		System.out.println(a+","+b+","+c+","+d+e+","+date);
+		        		
 		        		switch(a) {
 						case "1" : v.add("한식");break;
 						case "2" : v.add("중식");break;
@@ -137,6 +138,7 @@ public class GUI9new extends JFrame{
 		        		v.add(date);
 		        		
 		        		rowData.add(v);
+		        		
 			}
 			
 			table.updateUI();
@@ -183,12 +185,13 @@ public class GUI9new extends JFrame{
 		jf.setText("");
 		try {
 			 JSONObject json = readJsonFromUrl(url);
-				System.out.println(json.toString());
+//				System.out.println(json.toString());
 				JSONArray dataArray = (JSONArray)json.get("data");
 				JSONObject obj = null;
 				
-				Vector<String> v = new Vector<String>();
+				
 				 for(int i=0;i<dataArray.size();i++) {
+					 Vector<String> v = new Vector<String>();
 		        		obj = (JSONObject) dataArray.get(i);
 		        		
 		        		String a= Long.toString((Long)obj.get("menuNo"));
