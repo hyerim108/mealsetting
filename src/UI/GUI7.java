@@ -133,7 +133,7 @@ public class GUI7 extends JFrame{
 			String menuNO= Integer.toString(cuisine);
 			try {
 				String url="http://localhost:8081/meal/updateMenu?menuNo="+URLEncoder.encode((String)menuNO)+
-						"&mealName="+menuname+"&price="+price+"&maxCount="+count+"&todayMeal="+today;
+						"&mealName="+URLEncoder.encode((String)menuname)+"&price="+URLEncoder.encode(Integer.toString(price))+"&maxCount="+URLEncoder.encode(Integer.toString(count))+"&todayMeal="+URLEncoder.encode(Integer.toString(today));
 				System.out.println(url);
 				//이름 가격 맥스카운트 조리가능수량
 					if(a.equals("등록")) {

@@ -139,8 +139,8 @@ public class GUI3new extends JFrame{
 
 	class centerPaner extends JPanel{
 		
-		public centerPaner(String b) {	//5*6버튼 넣기 내일 꺼 복붙하기
-
+		public centerPaner(String b) {	//5*6버튼 넣기 내일 꺼 복붙하기152.70.250.228
+//http://localhost:8081
 			String url="http://localhost:8081/meal/count/"+b;
 				try {
 
