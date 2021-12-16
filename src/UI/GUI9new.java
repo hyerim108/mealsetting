@@ -99,7 +99,7 @@ public class GUI9new extends JFrame{
 	
 	private void search() {	//조회를 클릭시
 		rowData.clear();
-		String url="http://localhost:8081/order/item/"+URLEncoder.encode((String)jf.getText());
+		String url="http://152.70.250.228/order/item/"+URLEncoder.encode((String)jf.getText());
 	
 		try {
 			 JSONObject json = readJsonFromUrl(url);
@@ -173,7 +173,7 @@ public class GUI9new extends JFrame{
 	    }
 	private void Setting() {	//새로고침
 //		http://localhost:8081/order/item
-		String url="http://localhost:8081/order/item";
+		String url="http://152.70.250.228/order/item";
 		jf.setText("");
 		try {
 			rowData.clear();

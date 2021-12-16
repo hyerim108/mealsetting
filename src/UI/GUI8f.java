@@ -125,7 +125,7 @@ public class GUI8f extends JFrame{
 		}
 	}
 	private void reset() {
-		String url="http://localhost:8081/meal/updateMenu?price="+
+		String url="http://152.70.250.228/meal/updateMenu?price="+
 				URLEncoder.encode((String) com2.getSelectedItem())+"&maxCount="+
 				URLEncoder.encode((String) com3.getSelectedItem())+"&mealName="+URLEncoder.encode((String) jf.getText());
 		

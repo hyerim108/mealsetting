@@ -149,7 +149,7 @@ public class GUI8new extends JFrame{
 			i=4;
 		}
 		String name ;
-		String url="http://localhost:8081/meal/item/"+i;
+		String url="http://152.70.250.228/meal/item/"+i;
 		try {
 			rowData.clear();
 //			
@@ -215,7 +215,7 @@ public class GUI8new extends JFrame{
 	}
 	private void delete() {
 //		String sql = "delete from meal where mealName='";
-		String url="http://localhost:8081/meal/delete/";
+		String url="http://152.70.250.228/meal/delete/";
 		
 		try {
 			
@@ -252,8 +252,8 @@ public class GUI8new extends JFrame{
 		}else {
 			
 //			String sql2 = "update meal set todayMeal=1 where mealName='";
-			String url="http://localhost:8081/meal/update/";
-			String sql = "http://localhost:8081/meal/updatezero/"+i;
+			String url="http://152.70.250.228/meal/update/";
+			String sql = "http://152.70.250.228/meal/updatezero/"+i;
 			try {
 //				JSONObject json3 = readJsonFromUrl(url);
 				

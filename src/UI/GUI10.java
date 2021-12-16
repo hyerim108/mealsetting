@@ -79,7 +79,7 @@ public class GUI10 extends JFrame{
             try {
 //               String sql = "select cuisineNo from orderlist";
                
-               String url = "http://localhost:8081/order/list";
+               String url = "http://152.70.250.228/order/list";
                
                JSONObject json = readJsonFromUrl(url);
                JSONArray dataArray = (JSONArray)json.get("data");

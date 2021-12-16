@@ -132,7 +132,7 @@ public class GUI7 extends JFrame{
 			count = Integer.parseInt(m);
 			String menuNO= Integer.toString(cuisine);
 			try {
-				String url="http://localhost:8081/meal/insert?menuNo="+URLEncoder.encode((String)menuNO)+
+				String url="http://152.70.250.228/meal/insert?menuNo="+URLEncoder.encode((String)menuNO)+
 						"&mealName="+URLEncoder.encode((String)menuname)+
 						"&price="+URLEncoder.encode(Integer.toString(price))+
 						"&maxCount="+URLEncoder.encode(Integer.toString(count))+

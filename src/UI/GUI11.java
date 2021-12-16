@@ -90,7 +90,7 @@ public class GUI11 extends JFrame{
 
 			try {
 				
-				String url="http://localhost:8081/member/count";
+				String url="http://152.70.250.228/member/count";
 				
 				 JSONObject json = readJsonFromUrl(url);
 //					System.out.println(json.toString());
@@ -180,7 +180,7 @@ public class GUI11 extends JFrame{
 //		}else {
 			try {
 				System.out.println(jf[1].getText());
-				String url="http://localhost:8081/member/insert"+"?memberName="+URLEncoder.encode((String)jf[1].getText())+"&passwd="+URLEncoder.encode((String)pw);
+				String url="http://152.70.250.228/member/insert"+"?memberName="+URLEncoder.encode((String)jf[1].getText())+"&passwd="+URLEncoder.encode((String)pw);
 //				String url="http://localhost:8081/member/insert/"+URLEncoder.encode((String)jf[1].getText())+"/"+URLEncoder.encode((String)pw);
 				JSONObject json = readJsonFromUrl(url);
 				JSONArray dataArray = (JSONArray)json.get("data");

@@ -142,7 +142,7 @@ public class GUI3new extends JFrame{
 		
 		public centerPaner(String b) {	//5*6버튼 넣기 내일 꺼 복붙하기152.70.250.228
 //http://localhost:8081
-			String url="http://localhost:8081/meal/count/"+b;
+			String url="http://152.70.250.228/meal/count/"+b;
 				try {
 
 					 JSONObject json = readJsonFromUrl(url);
@@ -177,7 +177,7 @@ public class GUI3new extends JFrame{
 
 	  
 		public void makebutton(String b) {
-			String url="http://localhost:8081/meal/item/"+b;
+			String url="http://152.70.250.228/meal/item/"+b;
 			
 			try {
 				
@@ -441,7 +441,7 @@ public class GUI3new extends JFrame{
 					JOptionPane.showMessageDialog(null, "품명을 선택해주세요","message",JOptionPane.ERROR_MESSAGE);
 				}
 				 //입력하면 테이블
-				String url = "http://localhost:8081/meal/search/"+URLEncoder.encode(stext[0].getText());
+				String url = "http://152.70.250.228/meal/search/"+URLEncoder.encode(stext[0].getText());
 					try {
 					int maxcount = 0;
 					
@@ -504,7 +504,7 @@ public class GUI3new extends JFrame{
 						String id = combo.getSelectedItem().toString();
 						String pass = new String(jtxt.getPassword());
 						
-						String url="http://localhost:8081/member/find/"+id;
+						String url="http://152.70.250.228/member/find/"+id;
 //						String sql = "select * from member where memberNo='"+id+"' and passwd='"+pass+"'";
 //						PreparedStatement psmt = con.prepareStatement(sql);
 						 JSONObject json = readJsonFromUrl(url);
@@ -542,7 +542,7 @@ public class GUI3new extends JFrame{
 			
 			try {
 				
-				String url="http://localhost:8081/member/list";
+				String url="http://152.70.250.228/member/list";
 				
 				JSONObject json = readJsonFromUrl(url);
 				JSONArray dataArray = (JSONArray)json.get("data");
