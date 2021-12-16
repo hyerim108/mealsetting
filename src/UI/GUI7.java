@@ -132,9 +132,12 @@ public class GUI7 extends JFrame{
 			count = Integer.parseInt(m);
 			String menuNO= Integer.toString(cuisine);
 			try {
-				String url="http://localhost:8081/meal/updateMenu?menuNo="+URLEncoder.encode((String)menuNO)+
-						"&mealName="+URLEncoder.encode((String)menuname)+"&price="+URLEncoder.encode(Integer.toString(price))+"&maxCount="+URLEncoder.encode(Integer.toString(count))+"&todayMeal="+URLEncoder.encode(Integer.toString(today));
-				System.out.println(url);
+				String url="http://localhost:8081/meal/insert?menuNo="+URLEncoder.encode((String)menuNO)+
+						"&mealName="+URLEncoder.encode((String)menuname)+
+						"&price="+URLEncoder.encode(Integer.toString(price))+
+						"&maxCount="+URLEncoder.encode(Integer.toString(count))+
+						"&todayMeal="+URLEncoder.encode(Integer.toString(today));
+		
 				//이름 가격 맥스카운트 조리가능수량
 					if(a.equals("등록")) {
 //						if(jt.equals(" ")) {
@@ -144,9 +147,10 @@ public class GUI7 extends JFrame{
 							JSONObject json = readJsonFromUrl(url);
 							JSONArray dataArray = (JSONArray)json.get("data");
 							JSONObject obj = null;
-							System.out.println("하하");
 							JOptionPane.showMessageDialog(null, "메뉴가 정상적으로 등록되었습니다.","Message",JOptionPane.INFORMATION_MESSAGE);
 								
+						}else {
+							dispose();
 						}
 //					}
 			}catch(Exception e2) {

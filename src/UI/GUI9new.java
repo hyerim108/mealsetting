@@ -100,17 +100,9 @@ public class GUI9new extends JFrame{
 	private void search() {	//조회를 클릭시
 		rowData.clear();
 		String url="http://localhost:8081/order/item/"+URLEncoder.encode((String)jf.getText());
-//		String sql = "select meal.cuisineNo,meal.mealName,member.memberName,"
-//				+ "orderCount,amount,orderDate from orderlist "
-//				+"INNER JOIN member on "
-//				+"orderlist.memberNo = member.memberNo "+
-//				"JOIN meal on "
-//				+"orderlist.mealNo = meal.mealNo "
-//				+"where meal.mealName like '%"+ jf.getText() +"%'";
-		
+	
 		try {
 			 JSONObject json = readJsonFromUrl(url);
-//				System.out.println(json.toString());
 				JSONArray dataArray = (JSONArray)json.get("data");
 				JSONObject obj = null;				
 				
@@ -126,8 +118,6 @@ public class GUI9new extends JFrame{
 		        		String date = (String) obj.get("orderDate");
 		        		        		
 		        		//종류 메뉴명 사원명 결제수량 결제금액 결제일
-	        		System.out.println(a+","+b+","+c+","+d+e+","+date);
-		        		
 		        		switch(a) {
 						case "1" : v.add("한식");break;
 						case "2" : v.add("중식");break;
@@ -147,7 +137,7 @@ public class GUI9new extends JFrame{
 			table.updateUI();
 			
 		}catch(Exception ee) {
-			System.out.println();
+//			System.out.println();
 		}
 	}
 	  private String jsonReadAll(Reader reader) throws IOException{

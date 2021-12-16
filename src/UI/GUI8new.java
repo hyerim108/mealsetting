@@ -206,6 +206,7 @@ public class GUI8new extends JFrame{
 			b[2] = table.getValueAt(u, 2).toString();
 			b[3] = table.getValueAt(u, 3).toString();
 			new GUI8f(b);
+			table.updateUI();
 		}else if(check>=2) {
 			JOptionPane.showMessageDialog(null, "하나씩 수정가능합니다.","Message",JOptionPane.ERROR_MESSAGE);
 		}else {

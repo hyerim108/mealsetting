@@ -29,6 +29,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DecimalFormat;
+import java.text.Format;
 import java.text.NumberFormat;
 import java.util.StringTokenizer;
 import java.util.Vector;
@@ -60,7 +62,6 @@ import com.mysql.jdbc.RowData;
 
 import DB.Driver_connect;
 //주문하는 GUI
-import UI.GUI3new2.btnv;
 
 public class GUI3new extends JFrame{
 
@@ -192,9 +193,16 @@ public class GUI3new extends JFrame{
 							Long c =(Long) obj.get("maxCount");
 							Long d =(Long) obj.get("todayMeal");
 			        	btnv.add(new btnv(a,aa,c,d));
+			        	
+			        	
+//			        	String aaaa= won.getText();
+//			        	 totalsum = Integer.parseInt(aaaa) + wowo;
 			        }
-				
-				
+//				 int wowo =(int) obj.get("price");
+//		        	System.out.println(wowo);
+//				 String newsum = NumberFormat.getInstance().format(totalsum);
+//				 won.setText(newsum+"원");
+//				
 			}catch(Exception ee) {
 				ee.printStackTrace();
 				System.out.println("btn sql 오류");
@@ -295,8 +303,10 @@ public class GUI3new extends JFrame{
 						Vector<String> click = rowDate.get(selectrow);
 						int clickprice = Integer.parseInt(click.get(3));
 						
+						
 						totalsum = totalsum-clickprice;
 						String newsum = NumberFormat.getInstance().format(totalsum);
+						
 						won.setText(newsum+"원");
 						
 						for(int i =0;i<btnv.size();i++) {
@@ -419,7 +429,7 @@ public class GUI3new extends JFrame{
 			JButton btn = (JButton)e.getSource();
 
 			if(btn.getText().equals("초기화")) {
-
+				
 				stext[0].setText("");
 				stext[1].setText("");
 			}
@@ -447,9 +457,13 @@ public class GUI3new extends JFrame{
 					
 			        	num =Long.toString((Long)obj.get("mealNo"));
 						price =Long.toString((Long)obj.get("price"));
-					 }
-				        
 						
+						
+					 }
+//				        DecimalFormat ff = new DecimalFormat("#,###"); ff.format(totalsum)
+					 totalsum = totalsum + (Integer.parseInt(price) * Integer.parseInt(stext[1].getText()));
+					 
+						won.setText(totalsum+"원");
 						int sum = Integer.parseInt(stext[1].getText())*Integer.parseInt(price);
 						vt.add(num);			
 						vt.add(stext[0].getText());
